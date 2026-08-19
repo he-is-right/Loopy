@@ -7,15 +7,49 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <div class="form-container">
-        <h1>Welcome to Loopy</h1>
-        <p class="hero-text">
-            The best platform to learn backend development.<br>Get started today!
-        </p>
-        <div class="btn-group">
-            <a href="/login.html" class="submit-btn">Login</a>
-            <a href="/signup.html" class="submit-btn secondary">Sign Up</a>
+    <nav class="navbar">
+        <div class="logo">Loopy</div>
+        <div class="nav-links">
+            <a href="/login.html" class="nav-link">Login</a>
+            <a href="/signup.html" class="nav-btn">Get Started</a>
         </div>
-    </div>
+    </nav>
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Master Backend Development.</h1>
+            <p class="hero-subtitle">
+                The most intuitive platform to learn, practice, and build production-ready backend systems. Start your journey with Loopy today.
+            </p>
+            <div class="hero-actions">
+                <a href="/signup.html" class="btn btn-primary">Start Learning for Free</a>
+                <a href="/login.html" class="btn btn-outline">Explore Courses</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><strong>10k+</strong> Students</div>
+                <div class="stat"><strong>50+</strong> Projects</div>
+                <div class="stat"><strong>24/7</strong> Support</div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="code-window">
+                <div class="window-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <pre class="code-content"><code><span class="keyword">const</span> express = require(<span class="string">'express'</span>);
+<span class="keyword">const</span> app = express();
+
+app.get(<span class="string">'/api/v1/users'</span>, <span class="keyword">async</span> (req, res) => {
+  <span class="keyword">const</span> users = <span class="keyword">await</span> User.find();
+  res.json({ success: <span class="keyword">true</span>, data: users });
+});
+
+app.listen(<span class="number">3000</span>, () => {
+  console.log(<span class="string">'Server running on port 3000'</span>);
+});</code></pre>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
