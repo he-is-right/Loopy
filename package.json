@@ -1,0 +1,14 @@
+{
+  "name": "loopy-backend-tutorial",
+  "version": "1.0.0",
+  "description": "Beginner backend tutorial with Node.js and Express",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "npm run start:express",
+    "start:express": "node server/app.js",
+    "start:node": "node server/server-pure-node.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
