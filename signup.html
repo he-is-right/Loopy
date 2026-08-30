@@ -6,38 +6,45 @@
     <title>Loopy | Sign Up</title>
     <link rel="stylesheet" href="main.css">
 </head>
-<body>
-    <nav class="top-nav">
-        <a href="/">&#8592; Home</a>
+<body class="auth-page">
+    <nav class="navbar" style="position: absolute; width: 100%; top: 0; border: none; background: transparent; backdrop-filter: none;">
+        <a href="/" class="logo">
+            <span class="logo-dot"></span> Loopy
+        </a>
     </nav>
-    <div class="form-container">
-        <h1>Create Account</h1>
+    
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Start collecting better feedback today.</p>
+        </div>
+        
         <form action="/signup" method="POST">
-            <div class="input-row">
-                <div class="input-group">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" placeholder="e.g. Jane" required>
+                    <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
                 </div>
-                <div class="input-group">
+                <div class="form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" placeholder="e.g. Doe" required>
+                    <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
                 </div>
             </div>
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Choose a username" autocomplete="off" required>
+            
+            <div class="form-group">
+                <label for="email">Work Email</label>
+                <input type="email" id="email" name="email" placeholder="jane@company.com" autocomplete="email" required>
             </div>
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required>
-            </div>
-            <div class="input-group">
+            
+            <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Create a strong password" autocomplete="new-password" required>
             </div>
-            <button type="submit" class="submit-btn">Sign Up</button>
+            
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">Create Account</button>
         </form>
-        <div class="form-footer">
+        
+        <div class="auth-footer">
             Already have an account? <a href="/login.html">Log in</a>
         </div>
     </div>

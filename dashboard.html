@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loopy | Dashboard</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/dashboard.html" class="logo">
+            <span class="logo-dot"></span> Loopy
+        </a>
+        <div class="nav-links">
+            <span id="welcomeMsg" class="nav-text"></span>
+            <a href="/logout" class="btn btn-primary" style="padding: 8px 16px;">Logout</a>
+        </div>
+    </nav>
+    
+    <div class="dashboard-layout">
+        <div class="header" style="margin-bottom: 2rem;">
+            <h1>Dashboard</h1>
+            <p>Manage your feedback campaigns and view responses.</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Left Column: Form -->
+            <div class="card">
+                <h3>Create Campaign</h3>
+                <form id="createCampaignForm">
+                    <div class="form-group">
+                        <label>Campaign Title</label>
+                        <input type="text" id="campTitle" required placeholder="e.g. Q3 Product Feedback">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Brand Color</label>
+                        <input type="color" id="campColor" value="#3b82f6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Question 1 (Rating)</label>
+                        <input type="text" id="q1" required placeholder="e.g. How would you rate our service?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Question 2 (Text)</label>
+                        <input type="text" id="q2" required placeholder="e.g. What can we improve?">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-accent btn-block">Create Campaign</button>
+                </form>
+            </div>
+            
+            <!-- Right Column: List & Responses -->
+            <div>
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3>Active Campaigns</h3>
+                    <div id="campaignsContainer">
+                        <div class="empty-state">Loading campaigns...</div>
+                    </div>
+                </div>
+                
+                <div id="responsesSection" class="card" style="display: none;">
+                    <div class="response-header" style="margin-bottom: 1.5rem;">
+                        <h3>Responses: <span id="currentCampaignTitle" style="color: var(--accent-color);"></span></h3>
+                    </div>
+                    
+                    <div style="background: var(--bg-color); padding: 12px; border-radius: var(--radius-md); margin-bottom: 24px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: 500; font-size: 0.9rem; color: var(--text-secondary);">Public Link:</span>
+                        <a href="#" id="publicLink" target="_blank" style="color: var(--accent-color); font-weight: 600; text-decoration: none; font-size: 0.9rem;"></a>
+                    </div>
+                    
+                    <div id="responsesContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+    </script>
+</body>
+</html>

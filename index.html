@@ -6,49 +6,41 @@
     <title>Loopy | Customer Feedback Platform</title>
     <link rel="stylesheet" href="main.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="logo">Loopy</div>
+<body style="background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);">
+    <nav class="navbar" style="border: none; background: transparent; backdrop-filter: none;">
+        <a href="/" class="logo">
+            <span class="logo-dot"></span> Loopy
+        </a>
         <div class="nav-links">
-            <a href="/login.html" class="nav-link">Login</a>
-            <a href="/signup.html" class="nav-btn">Start Free Trial</a>
+            <a href="/login.html" class="nav-text" style="text-decoration: none;">Login</a>
+            <a href="/signup.html" class="btn btn-primary">Start Free Trial</a>
         </div>
     </nav>
-    <main class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Your feedback, your brand.</h1>
-            <p class="hero-subtitle">
-                Create custom-branded review pages, choose the exact feedback you want to collect, and share a unique link. Get instantly notified of new responses via Email, WhatsApp, and other channels.
-            </p>
-            <div class="hero-actions">
-                <a href="/signup.html" class="btn btn-primary">Create Your Link</a>
-                <a href="/login.html" class="btn btn-outline">See an Example</a>
-            </div>
-            <div class="hero-stats">
-                <div class="stat"><strong>500+</strong> Businesses</div>
-                <div class="stat"><strong>1M+</strong> Insights</div>
-                <div class="stat"><strong>99%</strong> Satisfaction</div>
-            </div>
+    
+    <main style="max-width: 1200px; margin: 80px auto; padding: 0 24px; text-align: center;">
+        <h1 style="font-size: 4rem; color: var(--primary-color); margin-bottom: 24px; letter-spacing: -0.04em;">Your feedback, <span style="color: var(--accent-color);">your brand.</span></h1>
+        
+        <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 40px auto; line-height: 1.8;">
+            Create custom-branded review pages, choose the exact feedback you want to collect, and share a unique link. Get instantly notified of new responses.
+        </p>
+        
+        <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px;">
+            <a href="/signup.html" class="btn btn-accent" style="padding: 16px 32px; font-size: 1.1rem;">Create Your Link</a>
+            <a href="/login.html" class="btn" style="padding: 16px 32px; font-size: 1.1rem; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); box-shadow: var(--shadow-sm);">Log In</a>
         </div>
-        <div class="hero-visual">
-            <div class="feedback-window">
-                <div class="window-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                </div>
-                <div class="feedback-content">
-                    <div class="feedback-card">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <p>"Loopy helped us reduce churn by 20% in just one quarter. Best feedback tool out there!"</p>
-                        <small>- Sarah J., Product Manager</small>
-                    </div>
-                    <div class="feedback-card">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <p>"The analytics dashboard is a game changer for our customer success team."</p>
-                        <small>- Mark D., Customer Success</small>
-                    </div>
-                </div>
+        
+        <div class="card" style="display: inline-flex; align-items: center; gap: 40px; padding: 32px 64px; border-radius: var(--radius-xl);">
+            <div>
+                <strong style="font-size: 2rem; color: var(--primary-color); display: block;">500+</strong>
+                <span style="color: var(--text-secondary);">Businesses</span>
+            </div>
+            <div>
+                <strong style="font-size: 2rem; color: var(--primary-color); display: block;">1M+</strong>
+                <span style="color: var(--text-secondary);">Insights</span>
+            </div>
+            <div>
+                <strong style="font-size: 2rem; color: var(--primary-color); display: block;">99%</strong>
+                <span style="color: var(--text-secondary);">Satisfaction</span>
             </div>
         </div>
     </main>

@@ -46,6 +46,31 @@ const server = http.createServer((req, res) => {
         return; // Stop execution here so we don't accidentally try to serve a file below
     }
 
+    // 1.5 ROUTING: Check if the request is a POST request to the /login URL
+    if (req.method === 'POST' && req.url === '/login') {
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        
+        req.on('end', () => {
+            const parsedBody = new URLSearchParams(body);
+            
+            const username = parsedBody.get('username');
+            const password = parsedBody.get('password');
+            
+            console.log("--- New Login Received (Pure Node)! ---");
+            console.log("Username:", username);
+            console.log("Password:", password, "(In a real app, always hash passwords!)");
+            
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(`<h1>Welcome back, ${username}!</h1><a href="/">Go back home</a>`);
+        });
+        
+        return;
+    }
+
     // 2. SERVING STATIC FILES (HTML, CSS)
     // We have to manually figure out which file the user wants based on the URL
     let filePath = path.join(__dirname, '../', req.url === '/' ? 'index.html' : req.url);

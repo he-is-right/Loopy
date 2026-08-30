@@ -1,59 +1,57 @@
-// --- EXPRESS.JS SERVER ---
-// This file uses the Express framework, which simplifies routing and file serving.
-// Compare this with server-pure-node.js to see how much code Express saves us!
-
-// 1. Import the Express library
-// Express makes it much easier to build web servers in Node.js
 const express = require('express');
-
-// 2. Import the 'path' library (built into Node.js)
-// We use this to properly find our HTML files on the computer
 const path = require('path');
+const session = require('express-session');
 
-// 3. Create the Express App
-// This 'app' object represents our web server
+const authRoutes = require('./routes/auth');
+const campaignRoutes = require('./routes/campaigns');
+const responseRoutes = require('./routes/responses');
+const paymentRoutes = require('./routes/payment');
+
 const app = express();
+const PORT = process.env.PORT || 3000;
+const SESSION_SECRET = process.env.SESSION_SECRET || 'super-secret-loopy-key';
 
-// 4. Define the PORT
-// A port is like a specific door on your computer where the server listens for requests
-const PORT = 3000;
-
-// --- MIDDLEWARE ---
-// Middleware are functions that run before our routes.
-
-// This allows Express to read data sent from HTML forms (like our signup form)
+// Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// This tells Express to automatically serve any static files (HTML, CSS, JS, Images)
-// that are located in the parent directory (which is where our index.html is).
-app.use(express.static(path.join(__dirname, '../')));
+// Configure Sessions
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    }
+}));
 
-// --- ROUTES ---
-// Routes define what happens when a user visits a specific URL
+// Serve Static Frontend Files (React Production Build)
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
-// Route for handling the Signup Form submission (POST request)
-app.post('/signup', (req, res) => {
-    // req.body contains the data sent from the form
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-    
-    // For now, we'll just log it to the console to prove we received it
-    console.log("--- New Signup Received! ---");
-    console.log("Name:", firstName, lastName);
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password, "(In a real app, always hash passwords!)");
-    
-    // We must send a response back to the user, otherwise their browser will hang
-    res.send(`<h1>Thanks for signing up, ${firstName}!</h1><a href="/">Go back home</a>`);
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/campaigns', campaignRoutes);
+app.use('/api/responses', responseRoutes);
+app.use('/api/payment', paymentRoutes);
+
+// Catch-all route to serve index.html for client-side routing in production
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        const indexPath = path.join(__dirname, '../client/dist/index.html');
+        res.sendFile(indexPath, (err) => {
+            if (err) {
+                res.status(200).send('Loopy API server is active. Client build not found or running in dev mode.');
+            }
+        });
+    }
 });
 
-// --- START THE SERVER ---
-// Tell our app to listen for incoming requests on the specified port
+// START THE SERVER
+const cronService = require('./services/cronService');
+
 app.listen(PORT, () => {
-    console.log(`Server is running!`);
-    console.log(`Visit http://localhost:${PORT} in your web browser.`);
+    console.log(`Loopy API Server is running on port ${PORT}!`);
+    cronService.start();
+    console.log(`Cron scheduler started.`);
 });
