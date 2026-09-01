@@ -120,8 +120,8 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 z-[100] flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-[2.5rem] border-4 border-slate-200 border-b-8 p-6 md:p-10 max-w-5xl w-full animate-bounce-pop shadow-2xl my-8 relative">
+    <div className="fixed inset-0 bg-slate-900/60 z-[100] flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="bg-white rounded-[2.5rem] border-4 border-slate-200 border-b-8 p-6 md:p-10 max-w-5xl w-full animate-bounce-pop shadow-2xl mt-8 mb-8 sm:mt-12 relative">
         
         {/* Top Right Chunky Close Button */}
         {onClose && (
