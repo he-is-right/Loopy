@@ -195,7 +195,7 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
                   </div>
 
                   <div className="mb-4">
-                    <span className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight">{plan.price}</span>
+                    <span className="text-2xl lg:text-3xl font-black text-slate-800 tracking-tight">{plan.price}</span>
                     <span className="text-slate-400 font-bold text-sm ml-1">{plan.period}</span>
                   </div>
 
