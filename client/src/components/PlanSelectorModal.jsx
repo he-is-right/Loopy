@@ -179,7 +179,7 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
                 } ${plan.popular ? 'border-b-8 md:-translate-y-2' : ''}`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-500 text-white font-black text-xs px-4 py-1 rounded-full uppercase tracking-widest border-2 border-purple-700 shadow-sm">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-500 text-white font-black text-xs px-4 py-1 rounded-full uppercase tracking-widest border-2 border-purple-700 shadow-sm whitespace-nowrap">
                     MOST POPULAR
                   </div>
                 )}
@@ -189,7 +189,7 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
                     <div className="w-12 h-12 rounded-2xl bg-white border-2 border-slate-200 border-b-4 flex items-center justify-center shadow-sm">
                       {plan.icon}
                     </div>
-                    <span className={`px-3 py-1 rounded-2xl font-black text-xs uppercase tracking-wider border-2 ${plan.badgeColor}`}>
+                    <span className={`px-3 py-1 rounded-2xl font-black text-xs uppercase tracking-wider border-2 whitespace-nowrap ${plan.badgeColor}`}>
                       {plan.name}
                     </span>
                   </div>
