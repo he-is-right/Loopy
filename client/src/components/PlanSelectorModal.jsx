@@ -111,18 +111,18 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
       } else {
         setError(data.error || 'Unable to initiate Squad checkout.');
         setLoadingPlan(null);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('plan-modal-container')?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err) {
       console.error(err);
       setError('Network error connecting to Squad gateway.');
       setLoadingPlan(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('plan-modal-container')?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 z-[100] flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
+    <div id="plan-modal-container" className="fixed inset-0 bg-slate-900/60 z-[100] flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
       <div className="bg-white rounded-[2.5rem] border-4 border-slate-200 border-b-8 p-6 md:p-10 max-w-5xl w-full animate-bounce-pop shadow-2xl mt-8 mb-8 sm:mt-12 relative">
         
         {/* Top Right Chunky Close Button */}
