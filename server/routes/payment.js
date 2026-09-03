@@ -67,13 +67,10 @@ router.post('/initiate', requireAuth, async (req, res) => {
             });
         }
 
-        // If Squad sandbox returns without checkout_url (or dummy keys in dev), provide redirect URL to mock callback
-        const devCheckoutUrl = `/payment/callback?ref=${transactionRef}&mock_success=true`;
-        res.json({
-            success: true,
-            checkoutUrl: devCheckoutUrl,
-            transactionRef,
-            isDevMode: true
+        // If we got here, Squad API failed to return a checkout URL
+        console.error('[PaymentRoute] Squad API failed:', squadResult);
+        res.status(400).json({ 
+            error: 'We could not initiate your payment at this time. Please try again later or contact support.'
         });
     } catch (err) {
         console.error('[PaymentRoute] Initiation error:', err);
@@ -157,7 +154,8 @@ router.get('/verify/:ref', requireAuth, async (req, res) => {
 
 // 3. Squad Webhook Listener (Asynchronous charge confirmation)
 router.post('/webhook', (req, res) => {
-    const signature = req.headers['x-squad-signature'];
+    // Squad documentation specifies x-squad-encrypted-body for webhook signature
+    const signature = req.headers['x-squad-encrypted-body'] || req.headers['x-squad-signature'];
     const event = req.body;
 
     // Verify webhook signature to prevent unauthorized access

@@ -111,11 +111,13 @@ export default function PlanSelectorModal({ currentPlan, onClose }) {
       } else {
         setError(data.error || 'Unable to initiate Squad checkout.');
         setLoadingPlan(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err) {
       console.error(err);
       setError('Network error connecting to Squad gateway.');
       setLoadingPlan(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

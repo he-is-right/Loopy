@@ -11,9 +11,22 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@loopy.com';
 const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
+    secure: Number(SMTP_PORT) === 465, // true for 465, false for other ports
     auth: {
         user: SMTP_USER,
         pass: SMTP_PASS
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
+});
+
+// Verify connection configuration on startup
+transporter.verify(function (error, success) {
+    if (error) {
+        console.error('[NotificationService] SMTP Connection Error:', error);
+    } else {
+        console.log('[NotificationService] SMTP Server is ready to take our messages');
     }
 });
 
@@ -76,7 +89,7 @@ class NotificationService {
 
         try {
             await transporter.sendMail({
-                from: FROM_EMAIL,
+                from: `"Loopy" <${FROM_EMAIL}>`,
                 to: toEmail,
                 subject: isCritical 
                     ? `🚨 CRITICAL: Low rating on ${campaign.title} — Immediate attention required`
@@ -99,6 +112,37 @@ class NotificationService {
             console.log(`[NotificationService] Saved pending notification for User ${userId}`);
         } catch (err) {
             console.error(`[NotificationService] Failed to save pending notification:`, err);
+        }
+    }
+
+    async sendWelcomeEmail(toEmail, firstName) {
+        console.log(`[NotificationService] Preparing welcome email for ${toEmail}...`);
+        const htmlContent = `
+            <h2>Welcome to Loopy, ${firstName}!</h2>
+            <p>We are thrilled to have you on board. Loopy makes it incredibly easy to gather feedback and learn what your users really want.</p>
+            <p><strong>Next steps:</strong></p>
+            <ul>
+                <li>Create your first campaign</li>
+                <li>Share the link with your users</li>
+                <li>Watch the feedback roll in!</li>
+            </ul>
+            <p>If you have any questions, feel free to reply to this email.</p>
+            <br>
+            <p>Best regards,</p>
+            <p><strong>The Loopy Team</strong></p>
+        `;
+
+        try {
+            console.log(`[NotificationService] Sending email via SMTP to ${toEmail}...`);
+            const info = await transporter.sendMail({
+                from: `"Loopy" <${FROM_EMAIL}>`,
+                to: toEmail,
+                subject: 'Welcome to Loopy! 🎉',
+                html: htmlContent
+            });
+            console.log(`[NotificationService] Sent welcome email to ${toEmail}. MessageID: ${info.messageId}`);
+        } catch (err) {
+            console.error(`[NotificationService] Failed to send welcome email to ${toEmail}:`, err.message || err);
         }
     }
 }

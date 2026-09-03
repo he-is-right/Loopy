@@ -31,9 +31,11 @@ export default function Auth({ isLogin, onAuth }) {
         await onAuth(data.user);
       } else {
         setError(data.error || 'Authentication failed');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

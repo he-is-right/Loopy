@@ -19,9 +19,8 @@ client/node_modules/
 .env.production.local
 .env.*
 
-# Ignore specific env example files if you don't want them ignored, but usually .env.example is tracked.
-!.env.example
-
+# .env.example is explicitly ignored as requested
+.env.example
 # Build output
 dist/
 build/
@@ -39,3 +38,7 @@ database.sqlite
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+prod.md
+generate-secret.js
+generate-secret.py

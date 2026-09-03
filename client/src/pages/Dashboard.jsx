@@ -98,7 +98,11 @@ export default function Dashboard({ user, onLogout }) {
   const handleCreate = async (e) => {
     e.preventDefault();
 
-    if (!hasActivePlan) {
+    if (currentPlan === 'free' && campaigns.length >= 1) {
+      setShowPlanSelector(true);
+      return;
+    }
+    if (currentPlan === 'starter' && campaigns.length >= 5) {
       setShowPlanSelector(true);
       return;
     }

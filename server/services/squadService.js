@@ -77,10 +77,13 @@ class SquadService {
             });
 
             const data = await response.json();
+            if (!response.ok || data.status !== 200) {
+                console.error('[SquadService] Raw API Failure Response:', data);
+            }
             return {
                 status: response.ok && data.status === 200,
                 data: data.data,
-                message: data.message || 'Payment initiation completed'
+                message: data.message || data.error || data.error_message || JSON.stringify(data)
             };
         } catch (error) {
             console.error('[SquadService] Error initiating payment:', error);
@@ -117,7 +120,7 @@ class SquadService {
                 .createHmac('sha512', SQUAD_SECRET_KEY)
                 .update(JSON.stringify(body))
                 .digest('hex');
-            return hash === signature;
+            return hash === signature || hash === signature.toLowerCase();
         } catch (err) {
             return false;
         }

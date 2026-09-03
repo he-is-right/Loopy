@@ -28,17 +28,18 @@ router.post('/', requireAuth, (req, res) => {
         const user = userStmt.get(req.session.userId);
         const plan = (user?.plan_type || 'none').toLowerCase();
 
-        // 1. Require a valid paid subscription (No free accounts)
-        if (!plan || plan === 'free') {
-            return res.status(403).json({
-                error: 'SUBSCRIPTION_REQUIRED',
-                message: 'A paid subscription is required to create and launch review campaigns. Please choose a plan.'
-            });
-        }
-
-        // 2. Starter Tier Limit: Up to 5 Campaigns, no webhooks
+        // 1. Free Tier Limit: Up to 1 Campaign, no webhooks
         let finalWebhook = null;
-        if (plan === 'starter') {
+        if (!plan || plan === 'free') {
+            const countStmt = db.prepare('SELECT COUNT(*) as count FROM campaigns WHERE user_id = ?');
+            const result = countStmt.get(req.session.userId);
+            if (result.count >= 1) {
+                return res.status(403).json({
+                    error: 'UPGRADE_REQUIRED',
+                    message: 'Free plan is limited to 1 campaign. Upgrade to a paid plan for more campaigns!'
+                });
+            }
+        } else if (plan === 'starter') {
             const countStmt = db.prepare('SELECT COUNT(*) as count FROM campaigns WHERE user_id = ?');
             const result = countStmt.get(req.session.userId);
             if (result.count >= 5) {

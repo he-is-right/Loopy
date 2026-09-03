@@ -1,10 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Feedback from './pages/Feedback';
 import PaymentCallback from './pages/PaymentCallback';
 import LandingPage from './pages/LandingPage';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,6 +44,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route 
           path="/" 

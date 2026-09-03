@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -15,13 +16,17 @@ const SESSION_SECRET = process.env.SESSION_SECRET || 'super-secret-loopy-key';
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Trust first proxy for HTTPS when deployed
+app.set('trust proxy', 1);
+
 // Configure Sessions
 app.use(session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production',
+        // 'auto' will set secure cookies if the connection is HTTPS, and standard cookies if HTTP (like on localhost)
+        secure: process.env.NODE_ENV === 'production' ? 'auto' : false,
         maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
     }
 }));

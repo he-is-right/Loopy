@@ -33,9 +33,11 @@ export default function PaymentCallback() {
           fireConfetti();
         } else {
           setErrorMsg(data.error || 'Payment verification was unsuccessful.');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } catch (err) {
         setErrorMsg('Network error verifying payment with Squad.');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } finally {
         setLoading(false);
       }

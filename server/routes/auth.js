@@ -1,18 +1,22 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../db');
+const notificationService = require('../services/notificationService');
 
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
+    console.log(`[Auth/Signup] Attempting signup for email: ${email}`);
 
     if (!firstName || !lastName || !email || !password) {
+        console.warn(`[Auth/Signup] Missing fields for ${email}`);
         return res.status(400).json({ error: 'All fields are required!' });
     }
 
     try {
         try {
+            console.log(`[Auth/Signup] Validating email with Relaybase: ${email}`);
             const relaybaseResponse = await fetch('https://api.tryrelaybase.com/v1/email/single-validate', {
                 method: 'POST',
                 headers: {
@@ -25,16 +29,19 @@ router.post('/signup', async (req, res) => {
 
             if (relaybaseResponse.ok) {
                 const rbData = await relaybaseResponse.json();
-                if (!rbData.valid) {
+                console.log(`[Auth/Signup] Relaybase response:`, JSON.stringify(rbData));
+                if (rbData.success && rbData.data && !rbData.data.is_valid) {
+                    console.warn(`[Auth/Signup] Email rejected by Relaybase: ${email}`);
                     return res.status(400).json({ error: 'Please provide a valid email address.' });
                 }
             } else {
-                console.warn('Relaybase API returned an error status:', relaybaseResponse.status);
+                console.warn('[Auth/Signup] Relaybase API returned status:', relaybaseResponse.status);
             }
         } catch (fetchErr) {
-            console.warn('Relaybase email validation failed or fetch is not available:', fetchErr.message);
+            console.warn('[Auth/Signup] Relaybase email validation failed/skipped:', fetchErr.message);
         }
 
+        console.log(`[Auth/Signup] Hashing password and inserting user into database...`);
         const passwordHash = await bcrypt.hash(password, 10);
         
         const today = new Date().toISOString().split('T')[0];
@@ -44,19 +51,25 @@ router.post('/signup', async (req, res) => {
         `);
         
         const info = stmt.run(firstName, lastName, email, passwordHash, today);
+        console.log(`[Auth/Signup] User created successfully with ID: ${info.lastInsertRowid}`);
         
-        // Log the user in immediately (no active plan until subscription)
         req.session.userId = info.lastInsertRowid;
         req.session.email = email;
         req.session.firstName = firstName;
         req.session.planType = 'free';
         
+        console.log(`[Auth/Signup] Dispatching welcome email to ${email} (background)...`);
+        notificationService.sendWelcomeEmail(email, firstName).catch(err => {
+            console.error('[Auth/Signup] Welcome email failed:', err);
+        });
+        
         res.status(201).json({ success: true, user: { email, firstName, planType: 'free' } });
     } catch (err) {
         if (err.message.includes('UNIQUE constraint failed')) {
+            console.warn(`[Auth/Signup] Duplicate email error for: ${email}`);
             return res.status(400).json({ error: 'Email already exists!' });
         }
-        console.error(err);
+        console.error('[Auth/Signup] Unexpected server error:', err);
         res.status(500).json({ error: 'Server Error' });
     }
 });
