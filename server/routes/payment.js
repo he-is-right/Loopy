@@ -36,7 +36,8 @@ router.post('/initiate', requireAuth, async (req, res) => {
 
     try {
         const transactionRef = squadService.generateTransactionRef();
-        const callbackUrl = `${req.protocol}://${req.get('host')}/payment/callback?ref=${transactionRef}`;
+        const protocol = process.env.NODE_ENV === 'production' ? 'https' : req.protocol;
+        const callbackUrl = `${protocol}://${req.get('host')}/payment/callback?ref=${transactionRef}`;
 
         // Record pending transaction in database
         const stmt = db.prepare(`
