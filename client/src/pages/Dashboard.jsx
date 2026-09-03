@@ -476,9 +476,16 @@ export default function Dashboard({ user, onLogout }) {
             <h3 className="text-2xl font-extrabold text-slate-800 uppercase tracking-wide px-2">Your Campaigns</h3>
             
             {campaigns.length === 0 ? (
-              <div className="text-center p-10 border-4 border-dashed border-slate-300 rounded-[2rem] bg-slate-100">
-                <p className="text-lg font-bold text-slate-500 mb-4">You haven't created any campaigns yet.</p>
-                <p className="text-slate-400">Click the button above or use the form to create your first review campaign!</p>
+              <div className="text-center p-10 border-4 border-dashed border-slate-300 rounded-[2rem] bg-slate-100 flex flex-col items-center justify-center">
+                <p className="text-xl font-black text-slate-400 mb-2">You haven't created any campaigns yet.</p>
+                <p className="text-sm font-bold text-slate-400 mb-6">Use the form to create your first review campaign!</p>
+                <button 
+                  type="button" 
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+                  className="btn-3d-purple px-8 py-3 text-sm"
+                >
+                  CREATE YOUR FIRST CAMPAIGN
+                </button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
