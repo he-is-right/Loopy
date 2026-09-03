@@ -45,8 +45,7 @@ router.post('/initiate', requireAuth, async (req, res) => {
         `);
         stmt.run(req.session.userId, transactionRef, planType.toLowerCase(), amount);
 
-        // Initiate with Squad Gateway
-        const squadResult = await squadService.initiateTransaction({
+        const squadPayload = {
             email: req.session.email,
             amountInKobo,
             transactionRef,
@@ -57,7 +56,12 @@ router.post('/initiate', requireAuth, async (req, res) => {
                 isAnnual: isAnnual ? 'true' : 'false'
             },
             isRecurring: true
-        });
+        };
+
+        console.log('[PaymentRoute] Initiating Squad Payment with payload:', JSON.stringify(squadPayload, null, 2));
+
+        // Initiate with Squad Gateway
+        const squadResult = await squadService.initiateTransaction(squadPayload);
 
         if (squadResult.status && squadResult.data?.checkout_url) {
             return res.json({
