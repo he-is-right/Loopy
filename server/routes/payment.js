@@ -55,7 +55,8 @@ router.post('/initiate', requireAuth, async (req, res) => {
                 userId: req.session.userId,
                 planType: planType.toLowerCase(),
                 isAnnual: isAnnual ? 'true' : 'false'
-            }
+            },
+            isRecurring: true
         };
 
         console.log('[PaymentRoute] Initiating Squad Payment with payload:', JSON.stringify(squadPayload, null, 2));
